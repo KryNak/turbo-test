@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello Mustache</title>
+    <script src="webjars/hotwired__turbo/7.3.0/dist/turbo.es2017-umd.js" defer></script>
+    <script src="webjars/hotwired__stimulus/3.2.1/dist/stimulus.umd.js"></script>
+</head>
+<body>
+
+<h1>Hello {{name}}!</h1>
+<hr/>
+
+<form data-controller="cleaner" method="post" action="{{url}}" data-action="turbo:submit-end->cleaner#clean">
+    <label for="todo">Nowy todo:</label>
+    <input type="text" id="todo" name="todo" data-cleaner-target="clean">
+    <button type="submit" data-turbo-frame="todos_frame">Dodaj</button>
+</form>
+<hr/>
+
+<h2>Oto twoja lista todo:</h2>
+
+<turbo-frame id="todos_frame">
+    <table>
+        <thead>
+        <tr>
+            <th>todo</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody id="todos_body">
+        {{#todos}}
+            <tr id="todo-{{id}}">
+                <th>{{todo}}</th>
+                <th>
+                    <form method="post" action="{{url}}/{{id}}">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit" data-turbo-frame="todos_frame">Delete</button>
+                    </form>
+                </th>
+            </tr>
+        {{/todos}}
+        </tbody>
+    </table>
+</turbo-frame>
+<hr/>
+
+<a href="/view1">Krystian</a>
+<span> | </span>
+<a href="/view2">Michal</a>
+
+<script>
+    const application = Stimulus.Application.start();
+    application.register("cleaner", class extends Stimulus.Controller {
+        static targets = ["clean"]
+
+        clean() {
+            this.cleanTarget.value = ""
+        }
+
+
+    })
+</script>
+</body>
+</html>

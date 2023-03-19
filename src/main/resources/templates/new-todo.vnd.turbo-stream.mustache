@@ -1,0 +1,13 @@
+<turbo-stream action="append" target="todos_body">
+    <template>
+        <tr id="todo-{{id}}">
+            <th>{{todo}}</th>
+            <th>
+                <form method="post" action="{{url}}/{{id}}">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" data-turbo-frame="todos_frame">Delete</button>
+                </form>
+            </th>
+        </tr>
+    </template>
+</turbo-stream>
